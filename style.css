@@ -165,7 +165,7 @@ section .title::after{
 /* home section styling */
 .home{
     display: flex;
-    background: url("OIP\ \(1\).jpeg.crdownload") no-repeat center;
+    background: url("https://res.cloudinary.com/dchrprwm0/image/upload/v1728970137/OIP_1_.jpeg_l8b9hm.jpg") no-repeat center;
     height: 100vh;
     color: #fff;
     min-height: 500px;
