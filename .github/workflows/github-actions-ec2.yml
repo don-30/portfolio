@@ -30,20 +30,29 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # Ensure Apache is updated and running
-            sudo apt-get -y update
-            sudo apt-get install -y apache2
-            sudo systemctl start apache2
-            sudo systemctl enable apache2
+            - name: Executing remote ssh commands using ssh key
+  uses: appleboy/ssh-action@master
+  with:
+    host: ${{ secrets.HOST_DNS }}
+    username: ${{ secrets.USERNAME }}
+    key: ${{ secrets.EC2_SSH_KEY }}
+    script: |
+      echo "Starting Apache setup"
+      sudo apt-get -y update
+      sudo apt-get install -y apache2
+      sudo systemctl start apache2
+      sudo systemctl enable apache2
 
-            # Navigate to the correct directory (replace with your actual path)
-            cd /home/don-30/portfolio || exit 1
+      # Debugging - confirm path
+      echo "Navigating to project directory"
+      cd /home/your_username/your_project_directory || { echo "Directory not found"; exit 1; }
 
-            # Clear the target directory before moving files
-            sudo rm -rf /var/www/html/*
+      echo "Clearing target directory"
+      sudo rm -rf /var/www/html/*
 
-            # Move files to the target directory
-            sudo mv * /var/www/html/
-            
-            # Confirm file transfer
-            ls -al /var/www/html/
+      echo "Moving files to target directory"
+      sudo mv * /var/www/html/
+      
+      echo "Files in /var/www/html/:"
+      ls -al /var/www/html/
+
