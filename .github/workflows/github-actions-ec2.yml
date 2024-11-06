@@ -1,6 +1,6 @@
 name: Push-to-EC2
 
-# Trigger deployment only on push to main branch
+# Trigger deployment only on push to the main branch
 on:
   push:
     branches:
@@ -30,9 +30,20 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            # Ensure Apache is updated and running
             sudo apt-get -y update
             sudo apt-get install -y apache2
             sudo systemctl start apache2
             sudo systemctl enable apache2
-            cd home
-            sudo mv * /var/www/html
+
+            # Navigate to the correct directory (replace with your actual path)
+            cd /home/don-30/portfolio || exit 1
+
+            # Clear the target directory before moving files
+            sudo rm -rf /var/www/html/*
+
+            # Move files to the target directory
+            sudo mv * /var/www/html/
+            
+            # Confirm file transfer
+            ls -al /var/www/html/
